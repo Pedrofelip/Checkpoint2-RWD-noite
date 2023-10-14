@@ -1,11 +1,15 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+
 import { Layout } from "../../components/layout/Layout"
 import { Title } from "../../components/title/Title"
+import { Button } from "../../components/button/Button"
+
 import OrderContext from "../../contexts/OrderContext"
 import { routes } from "../../routes"
-import { Button } from "../../components/button/Button"
+
 import { convertToCurrency } from "../../helpers/convertToCurrency"
+
 import {
   CheckoutAction,
   CheckoutItem,
@@ -60,13 +64,18 @@ export default function Checkout() {
       <Title tabIndex={0}>Pagamento</Title>
       <CheckoutItem>
         <h2>Items</h2>
-        <CheckoutItemFlex>
-          <p>
-            {pizzaOrder?.item.name}/{pizzaOrder?.item.size}
-          </p>
-          <p>{convertToCurrency(pizzaOrder?.item.value)}</p>
-        </CheckoutItemFlex>
+        {pizzaOrder.item.map((item) => {
+          return (
+            <CheckoutItemFlex>
+              <p>
+                {item.name} / {item.size}
+              </p>
+              <p>{convertToCurrency(item.value)}</p>
+            </CheckoutItemFlex>
+          )
+        })}
       </CheckoutItem>
+
       <CheckoutItem>
         <h2>Forma de pagamento</h2>
         <CheckoutItemFlex>
@@ -98,7 +107,7 @@ export default function Checkout() {
         </CheckoutItemFlex>
       </CheckoutItem>
       <CheckoutAction>
-        <Button onClick={() => {}} disabled={!Boolean(paymentType)}>
+        <Button onClick={handleClick} disabled={!Boolean(paymentType)}>
           Fazer pedido
         </Button>
       </CheckoutAction>
